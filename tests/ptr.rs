@@ -130,3 +130,18 @@ fn vec() {
     assert_eq!(particles.name[2], "Fe");
     assert_eq!(particles.mass[2], 3.0);
 }
+
+#[test]
+fn index() {
+    let mut particles = ParticleVec::new();
+
+    particles.push(Particle::new(String::from("Na"), 1.0));
+    particles.push(Particle::new(String::from("Zn"), 2.0));
+    particles.push(Particle::new(String::from("Fe"), 3.0));
+
+    let particle = (&particles)[2];
+
+    assert_eq!(*particle.name, "Fe");
+    assert_eq!(*particle.mass, 3.0);
+}
+

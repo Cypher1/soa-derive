@@ -78,6 +78,49 @@ pub fn derive(input: &Input) -> TokenStream {
 
     quote!{
         // usize
+        impl<'a> std::ops::Index<usize> for &'a #vec_name {
+            type Output = #ref_name<'a>;
+
+            fn index(&self, index: usize) -> &Self::Output {
+                if index < self.len() {
+                    use soa_derive::SoAIndex;
+                    unsafe { 
+                        let ptr = &index.get_unchecked(*self) as *const Self::Output;
+                        &*ptr
+                    }
+                } else {
+                    todo!()
+                }
+            }
+        }
+        impl<'a> std::ops::Index<usize> for &'a mut #vec_name {
+            type Output = #ref_mut_name<'a>;
+            fn index(&self, index: usize) -> &Self::Output {
+                if index < self.len() {
+                    use soa_derive::SoAIndexMut;
+                    unsafe { 
+                        let ptr = &index.get_unchecked(*self) as *const Self::Output;
+                        &*ptr
+                    }
+                } else {
+                    todo!()
+                }
+            }
+        }
+        impl<'a> std::ops::IndexMut<usize> for &'a mut #vec_name {
+            fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+                if index < self.len() {
+                    use soa_derive::SoAIndexMut;
+                    unsafe { 
+                        let ptr = &index.get_unchecked(*self) as *const Self::Output;
+                        &*ptr
+                    }
+                } else {
+                    todo!()
+                }
+            }
+        }
+        // usize
         impl<'a> ::soa_derive::SoAIndex<&'a #vec_name> for usize {
             type RefOutput = #ref_name<'a>;
 
